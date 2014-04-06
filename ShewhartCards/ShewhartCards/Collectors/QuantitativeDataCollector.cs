@@ -7,7 +7,7 @@ using ShewhartCards.Services;
 
 namespace ShewhartCards.Collector
 {
-    class QuantitativeDataCollector
+    public class QuantitativeDataCollector
     {
 
         private string currentSelectionName;

@@ -6,7 +6,7 @@ using ShewhartCards.Utilities;
 
 namespace ShewhartCards
 {
-    class ShewhartCardsBuilder
+    public class ShewhartCardsBuilder
     {
         private static double[] A1 = { 0, 0, 2.121, 1.732, 1.5, 1.342, 1.225, 1.134, 1.061, 1, 0.949, 0.905, 0.866, 0.832, 0.802, 0.775, 0.75, 0.728, 0.707, 0.688, 0.671, 0.655, 0.64, 0.626, 0.612, 0.6 };
         private static double[] A2 = { 0, 0, 1.88, 1.023, 0.729, 0.577, 0.483, 0.419, 0.373, 0.337, 0.308 };

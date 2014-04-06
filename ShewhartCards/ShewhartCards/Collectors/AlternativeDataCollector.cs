@@ -7,7 +7,7 @@ using ShewhartCards.Utilities;
 
 namespace ShewhartCards.Collector
 {
-    class AlternativeDataCollector
+    public class AlternativeDataCollector
     {
         private string currentSelectionName;
         private long currentSelectionId;

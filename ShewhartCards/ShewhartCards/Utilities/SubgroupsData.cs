@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ShewhartCards.Utilities
 {
-    class SubgroupsData
+    public class SubgroupsData
     {
         public SubgroupsData(int elementsQuantity, int deviationsQuantity)
         {
