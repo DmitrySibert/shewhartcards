@@ -91,10 +91,10 @@ namespace ShewhartCards
 
         public bool isInSpecialState()
         {
-            return true;
+            return isEightValuesOutOfCZone() || isFifteenValuesInCZone() || isFourValuesFromFiveInBZone() || isIncDecTendency() || isNineValuesOnOneSide() || isTendencyOfSix() || isTwoValuesFromThreeinAZone();
         }
 
-        private bool isTendencyOfSix() 
+        public bool isTendencyOfSix() 
         {
             int countUp = 1, countDown = 1;
             double prev = values[0];
@@ -116,6 +116,7 @@ namespace ShewhartCards
                 {
                     countDown = 1;
                 }
+                prev = values[i];
                 if (countDown == 6 || countUp == 6)
                 {
                     return true;
@@ -124,7 +125,7 @@ namespace ShewhartCards
             return false;
         }
 
-        private bool isIncDecTendency()
+        public bool isIncDecTendency()
         {
             bool isUp;
             int begin = 0;
@@ -134,28 +135,30 @@ namespace ShewhartCards
                 return false;
             }
             begin = findIncDecTendencyBegin(0, out isUp);
-            if (begin == 0)
+            if (begin == -1)
             {
                 return false;
             }
             for (int i = begin; i < values.Length - 1; i++)
             {
-                if (values[i] > values[i + 1])
+                if (values[i] > values[i + 1] && isUp)
                 {
-                    if (isUp)
+                    count++;
+                    isUp = !isUp;
+                }
+                else if (values[i] < values[i + 1] && !isUp)
+                {
+                    count++;
+                    isUp = !isUp;
+                }
+                else
+                {
+                    i = findIncDecTendencyBegin(i, out isUp);
+                    if (i == -1)
                     {
-                        count++;
-                        isUp = !isUp;
+                        return false;
                     }
-                    else
-                    {
-                        i = findIncDecTendencyBegin(i, out isUp);
-                        if (i == 0)
-                        {
-                            return false;
-                        }
-                        count = 2;
-                    }
+                    count = 2;
                 }
             }
             if (count == 14)
@@ -165,27 +168,26 @@ namespace ShewhartCards
             return false;
         }
 
-        private int findIncDecTendencyBegin(int begin, out bool startTendency)
+        public int findIncDecTendencyBegin(int begin, out bool startTendency)
         {
-            int result = 0;
             startTendency = false;
             for (int i = begin; i < values.Length - 1; i++)
             {
                 if (values[i] > values[i + 1])
                 {
                     startTendency = false;
-                    result = i + 1;
+                    return i + 1;
                 }
                 else if (values[i] < values[i + 1])
                 {
                     startTendency = true;
-                    result = i + 1;
+                    return i + 1;
                 }
             }
-            return result; 
+            return -1; 
         }
 
-        private bool isTwoValuesFromThreeinAZone()
+        public bool isTwoValuesFromThreeinAZone()
         {
             double sigma = (upperLine - centralLine) / 3;
             double firstZoneATop = upperLine;
@@ -210,7 +212,7 @@ namespace ShewhartCards
             return false;
         }
 
-        private bool isFourValuesFromFiveInBZone()
+        public bool isFourValuesFromFiveInBZone()
         {
             double sigma = (upperLine - centralLine) / 3;
             double firstZoneBTop = upperLine - sigma;
@@ -239,7 +241,7 @@ namespace ShewhartCards
             return false;
         }
 
-        private bool isFifteenValuesInCZone()
+        public bool isFifteenValuesInCZone()
         {
             double sigma = (upperLine - centralLine) / 3;
             double zoneCTop = centralLine + sigma;
@@ -263,7 +265,7 @@ namespace ShewhartCards
             return false;
         }
 
-        private bool isEightValuesOutOfCZone()
+        public bool isEightValuesOutOfCZone()
         {
             double sigma = (upperLine - centralLine) / 3;
             double zoneCTop = centralLine + sigma;
@@ -292,7 +294,7 @@ namespace ShewhartCards
             return value <= zoneTop && value >= zoneBottom;
         }
 
-        private bool isNineValuesOnOneSide()
+        public bool isNineValuesOnOneSide()
         {
             int aboveCount = 0;
             int belowCount = 0;
