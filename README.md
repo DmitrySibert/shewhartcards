@@ -45,3 +45,6 @@ IShewhartCard card = collector.getShewhartCard(ShewhartCardsBuilder.Quantitative
 //Check method performanceTestFunc() on state of statistical control.
 bool isInControl = card.isInStateOfStaticalControl();
 ```
+Required
+============
+SQLite library in project's directory. It can be taken from this repositoryor from the official site.
