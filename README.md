@@ -47,4 +47,4 @@ bool isInControl = card.isInStateOfStaticalControl();
 ```
 Required
 ============
-SQLite library in project's directory. It can be taken from this repositoryor from the official site.
+SQLite library in project's directory. It can be taken from this repository or from the official site.
