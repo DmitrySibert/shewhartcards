@@ -9,9 +9,10 @@ namespace ShewhartCards
     public class ShewhartCardsBuilder
     {
         private static double[] A1 = { 0, 0, 2.121, 1.732, 1.5, 1.342, 1.225, 1.134, 1.061, 1, 0.949, 0.905, 0.866, 0.832, 0.802, 0.775, 0.75, 0.728, 0.707, 0.688, 0.671, 0.655, 0.64, 0.626, 0.612, 0.6 };
-        private static double[] A2 = { 0, 0, 1.88, 1.023, 0.729, 0.577, 0.483, 0.419, 0.373, 0.337, 0.308 };
+        private static double[] A2 = { 0, 0, 1.88, 1.023, 0.729, 0.577, 0.483, 0.419, 0.373, 0.337, 0.308, 0.285, 0.266, 0.249, 0.235, 0.223 };
         private static double[] D3 = { 0, 0, 0, 0, 0, 0, 0, 0.076, 0.136, 0.184, 0.223 };
         private static double[] D4 = { 3.267, 2.575, 2.282, 2.115, 2.004, 1.924, 1.864, 1.816, 1.777 };
+        private static double E2 = 2.66; 
 
         public enum AlternativeCardType
         {
@@ -24,6 +25,7 @@ namespace ShewhartCards
         public enum QuantitativeCardType
         {
             xCard,
+            xIndividualCard,
             rCard
         }
 
@@ -65,6 +67,9 @@ namespace ShewhartCards
             {
                 case QuantitativeCardType.xCard:
                     shewhartCard = xCard(values);
+                    break;
+                case QuantitativeCardType.xIndividualCard:
+                    shewhartCard = xIndividualCard(values);
                     break;
                 case QuantitativeCardType.rCard:
                     shewhartCard = rCard(values);
@@ -283,6 +288,34 @@ namespace ShewhartCards
             x /= groupValues.Length;
             double ucl = x + A2[groupValues[0].Length] * r;
             double lcl = x - A2[groupValues[0].Length] * r;
+            return buildShewhartCard(ucl, lcl, x, averageValues);
+        }
+
+        /// <summary>
+        /// "Карта индивидуальных значений"
+        /// Метод строит карту Шухарта вида "X-карта" индивидуальных значений. Вместо подгрупп используется только одно значениее.
+        /// Стандартные значения не заданы.
+        /// </summary>
+        /// <param name="groupValues">Массив значений</param>
+        /// <returns>Возвращает контрольную карту.
+        /// </returns>
+        public static IShewhartCard xIndividualCard(double[][] values)
+        {
+            double x = 0; //центральная линия
+            double r = 0; //средний скользящий размах
+            double[] averageValues = new double[values.Length];
+            x += values[0][0];
+            averageValues[0] = values[0][0]; 
+            for (int i = 1; i < values.Length; i++)
+            {
+                averageValues[i] = values[i][0]; 
+                x += values[i][0];
+                r += values[i][0] - values[i - 1][0];
+            }
+            r /= values.Length - 1;
+            x /= values.Length;
+            double ucl = x + E2 * r;
+            double lcl = x - E2 * r;
             return buildShewhartCard(ucl, lcl, x, averageValues);
         }
 
